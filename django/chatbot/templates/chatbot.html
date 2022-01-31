@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+<link href="{% static 'css/UI.css' %}" rel="stylesheet">   
+{% block page_content %}
+<body>
+<center>
+  <h2> GeekBot
+    <img
+      src="{% static 'bot.jpeg' %}"
+      alt="GeekBot"
+      style="width:70px; height:70px;"
+    />
+  </h2>
+</center>
+<div class="box"></div>
+<div class="boxed">
+  <div style="background-color:#ddd99e;">
+    <div id="chatbox">
+      <p class="botText">
+        <img
+        src="{% static 'bot.jpeg' %}"
+        alt="JARVIS"
+        style="width:40px;height:40px;"
+      />
+        <span>Hey there! GeekBot at your service!</span>
+      </p>
+    </div>
+    <div id="userInput">
+      <input id="textInput" type="text" name="msg" placeholder="Message" />
+    </div>
+  </div>
+  <script>
+    function getBotResponse() {
+      var rawText = $("#textInput").val();
+      var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+      $("#textInput").val("");
+      $("#chatbox").append(userHtml);
+      document
+        .getElementById("userInput")
+        .scrollIntoView({ block: "start", behavior: "smooth" });
+      $.get("/get", { msg: rawText }).done(function(data) {
+        var botHtml = '<p class="botText"><img src="{% static "bot.jpeg" %}" alt="JARVIS" style="width:40px;height:40px;"/><span>' + data + '</span></p>';
+        $("#chatbox").append(botHtml);
+        document
+          .getElementById("userInput")
+          .scrollIntoView({ block: "start", behavior: "smooth" });
+      });
+    }
+    $("#textInput").keypress(function(e) {
+      if (e.which == 13) {
+        getBotResponse();
+      }
+    });
+  </script>
+  <button><a href="{% url 'loginform' %}">Add word</a> </button>
+{% endblock %}

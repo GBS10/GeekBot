@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+<link href="{% static 'css/UI.css' %}" rel="stylesheet">   
+{% block page_content %}
+<body>
+<h1> Enter the word </h1>
+<form method="post" action="{% url 'addword' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Add</button>
+</form>
+{% endblock %}
